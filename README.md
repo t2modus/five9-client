@@ -1,28 +1,31 @@
+
 # Five9::Client
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/five9/client`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A client library written in plain old Ruby to facilitate working with the Five9 API from within our projects.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'five9-client'
+gem 'five9-client', git: 'https://github.com/t2modus/five9-client'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install five9-client
-
 ## Usage
 
-TODO: Write usage instructions here
+Usage is pretty straightforward. Each class is used as both a way of communicating with the API and a thin wrapper around the
+data returned by the API as well. You can think about it as working similarly to ActiveRecord, except that instead of interacting
+with the database you're interacting with Five9's API.
+
+```ruby
+campaign = Five9::Client::Campaign.list.first
+lists = campaign.lists
+ai_list = campaign.ai_list
+ai_list.add)records(records)
+Five9::Client::Disposition.list(start_time: 10.years.ago, end_time: Time.current, campaigns: campaign.name)
 
 ## Development
 
@@ -32,12 +35,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/five9-client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Bug reports and pull requests are welcome on GitHub at https://github.com/t2modus/five9-client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Five9::Client project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/five9-client/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Five9::Client project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/t2modus/five9-client/blob/master/CODE_OF_CONDUCT.md).
+
