@@ -10,6 +10,9 @@ Add this line to your application's Gemfile:
 gem 'five9-client', git: 'https://github.com/t2modus/five9-client'
 ```
 
+You will also need to add credentials to your git setup on each computer that will use the gem (including servers!) so that your application can actually access the repo. You can do that like this:
+`bundle config https://github.com/t2modus/five9-client <github_username>:<github_password>`
+
 And then execute:
 
     $ bundle
