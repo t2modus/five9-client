@@ -10,8 +10,8 @@ module Five9
       self.attr_accessor(*APPROVED_ATTRIBUTES)
 
       def initialize(attributes)
-        attributes.slice(*APPROVED_ATTRIBUTES.map(&:camelize)).each do |k, v|
-          self.send("#{k}=", v)
+        attributes.with_indifferent_access.slice(*APPROVED_ATTRIBUTES.map { |a| a.camelize(:lower) }).each do |k, v|
+          self.send("#{k.underscore}=", v)
         end
       end
 

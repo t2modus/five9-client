@@ -6,26 +6,37 @@ module Five9
     # Five9 API classes
     class Base
       ARRAY_TAG_REGEXP = /^\s*<[a-zA-Z]+ type="array">/
+      NOT_CONFIGURED_ERROR = 'Five9 Client is not configured! Please configure it before attempting to make a request'
 
-      def initialize(configuration = nil)
-        @configuration = configuration || Configuration.default_configuration
+      def method_missing(name, *args)
+        if self.class.respond_to?(name)
+          self.class.send(name, *args)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(name)
+        self.class.respond_to?(name) || super
+      end
+
+      def to_json(*args)
+        self.instance_variables.each_with_object({}) do |var, hash|
+          hash[var.to_s.tr('@', '')] = self.instance_variable_get(var)
+        end.to_json
       end
 
       class << self
-        def wrap_in_array(response)
-          return [] if response.nil?
-          response = [response] unless response.is_a?(Array)
-          response
-        end
-
         def request(body)
-          request = Net::HTTP::Post.new @configuration.url.path
+          configuration = Configuration.instance || Configuration.default_configuration
+          raise(Five9::Client::Error, NOT_CONFIGURED_ERROR) unless configuration.present?
+          request = Net::HTTP::Post.new configuration.url.path
           request.body = body
           request.content_type = 'text/xml'
-          request.basic_auth(*@configuration.login.auth_args)
+          request.basic_auth(configuration.username, configuration.password)
           request['Accept-Encoding'] = 'gzip'
           request['SOAPAction'] = '""'
-          http = Net::HTTP.new(@configuation.url.host, @configuration.url.port)
+          http = Net::HTTP.new(configuration.url.host, configuration.url.port)
           http.use_ssl = true
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
           response = http.request(request)
@@ -61,15 +72,16 @@ module Five9
         def clean_up_array_tags(xml)
           xml.scan(ARRAY_TAG_REGEXP).each do |array_tag|
             tag = array_tag.strip.split('<').second.split.first
-            xml.gsub!(/^\s*<\/?#{Regexp.quote(tag)}( type="array")?>\s*$/, '')
+            xml = xml.gsub(/^\s*<\/?#{Regexp.quote(tag)}( type="array")?>\s*$/, '')
           end
           xml
         end
 
-        def response_hash(response, key)
-          wrap_in_array(
+        def response_hash(response, key, keys_to_dig_for = nil)
+          keys_to_dig_for ||= ['Envelope', 'Body', key, 'return']
+          Array.wrap(
             Hash.from_xml(response)
-                .dig('Envelope', 'Body', key, 'return')
+                .dig(*keys_to_dig_for)
           )
         end
       end

@@ -19,6 +19,14 @@ And then execute:
 
 ## Usage
 
+For initial setup, you'll need to either configure the client via an initializer, or set the FIVE9_URL, FIVE9_USER, and FIVE9_PASSWORD environment variables. If you don't set these variables, you'll need to configure the client with an initializer as follows:
+```ruby
+Five9::Client.configure do |config|
+	config.url = <FIVE9_URL_HERE>
+	config.username = <FIVE9_USERNAME_HERE>
+	config.password = <FIVE9_PASSWORD>
+end
+```
 Usage is pretty straightforward. Each class is used as both a way of communicating with the API and a thin wrapper around the
 data returned by the API as well. You can think about it as working similarly to ActiveRecord, except that instead of interacting
 with the database you're interacting with Five9's API.

@@ -1,0 +1,1 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Header/><env:Body><stopCampaignResponse><return>Success!</return></stopCampaignResponse></env:Body></env:Envelope>

@@ -3,7 +3,7 @@
 module Five9
   module Client
     # This class is responsible for defining and running reports using Five9's API
-    class Report
+    class Report < Base
       def initialize(folder_name: 'T2', report_name: 'API')
         @folder_name = folder_name
         @report_name = report_name
@@ -68,7 +68,7 @@ module Five9
             end
 
             records = results.dig('records')
-            wrap_in_array(records).map do |record|
+            Array.wrap(records).map do |record|
               record.dig('values', 'data')&.each_with_object({})&.with_index do |(value, record_hash), index|
                 record_hash[columns[index]] = value.nil? || value.is_a?(Hash) ? nil : value
               end

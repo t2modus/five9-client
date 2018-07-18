@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# Requiring rails' date helper libraries since they get sed a bit for the AI list creation
-require 'active_support/core_ext/numeric/time'
-
 module Five9
   module Client
     # This class is responsible for logic for retrieving and
@@ -11,6 +8,7 @@ module Five9
       self.attr_accessor :name
 
       def initialize(attributes)
+        attributes = attributes.with_indifferent_access
         self.name = attributes['name'] || attributes['listName']
       end
 
@@ -65,7 +63,7 @@ module Five9
       def remove_from_campaign(campaign_name)
         response_hash(
           request(
-            soap_envelope(:removeListsFromCampaign, campaignName: campaign_name, lists: [{ listName: self.name }])
+            soap_envelope(:removeListsFromCampaign, campaignName: campaign_name, lists: self.name )
           ), 'removeListsFromCampaignResponse'
         )
       end
@@ -82,7 +80,14 @@ module Five9
         end
 
         def create(list_name)
-          self.new response_hash(request(soap_envelope(:createList), listName: list_name), 'CreateListResponse')
+          result = response_hash(
+            request(
+              soap_envelope(:createList, listName: list_name)
+            ), 'CreateListResponse', ['Envelope', 'Body', 'createListResponse']
+          )
+          if result.present?
+            self.new(name: list_name)
+          end
         end
 
         def for_campaign(campaign_name)
