@@ -1,0 +1,1 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Header/><env:Body><ns2:removeListsFromCampaignResponse xmlns:ns2="http://service.admin.ws.five9.com/"/></env:Body></env:Envelope>
