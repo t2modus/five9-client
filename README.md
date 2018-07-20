@@ -35,8 +35,9 @@ with the database you're interacting with Five9's API.
 campaign = Five9::Client::Campaign.list.first
 lists = campaign.lists
 ai_list = campaign.ai_list
-ai_list.add)records(records)
-Five9::Client::Disposition.list(start_time: 10.years.ago, end_time: Time.current, campaigns: campaign.name)
+ai_list.add_records(records)
+Five9::Client::Report.new.run(start_time: 10.years.ago, end_time: Time.current, campaigns: campaign.name)
+```
 
 ## Development
 
