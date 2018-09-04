@@ -33,7 +33,7 @@ module Five9
               <fn:addToListCsv>
                 <listName>#{self.name}</listName>
                 <listUpdateSettings>
-                  #{self.header_columns}
+                  #{self.header_columns(fields)}
                   <reportEmail>admin@t2modus.com</reportEmail>
                   <separator>,</separator>
                   <skipHeaderLine>true</skipHeaderLine>
