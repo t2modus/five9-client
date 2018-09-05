@@ -74,7 +74,7 @@ module Five9
             tag = array_tag.strip.split('<').second.split.first
             xml = xml.gsub(/^\s*<\/?#{Regexp.quote(tag)}( type="array")?>\s*$/, '')
           end
-          xml
+          xml.gsub!('objectName', 'objectNames')
         end
 
         def response_hash(response, key, keys_to_dig_for = nil)

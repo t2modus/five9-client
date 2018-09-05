@@ -7,7 +7,7 @@ module Five9
       APPROVED_ATTRIBUTES = %w[agent_full_name appointment call_id call_end_timestamp call_number
                                call_type_name campaign_name comments customer_id dealership_id
                                disposition_name lead_id].freeze
-      self.attr_accessor(*APPROVED_ATTRIBUTES)
+      attr_accessor(*APPROVED_ATTRIBUTES)
 
       def initialize(attributes)
         attributes.slice(*APPROVED_ATTRIBUTES.map(&:camelize)).each do |k, v|

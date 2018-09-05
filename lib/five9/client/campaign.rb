@@ -7,7 +7,7 @@ module Five9
     class Campaign < Base
       APPROVED_ATTRIBUTES = %w[name description mode profile_name state type].freeze
 
-      self.attr_accessor(*APPROVED_ATTRIBUTES)
+      attr_accessor(*APPROVED_ATTRIBUTES)
 
       def initialize(attributes)
         attributes.with_indifferent_access.slice(*APPROVED_ATTRIBUTES.map { |a| a.camelize(:lower) }).each do |k, v|

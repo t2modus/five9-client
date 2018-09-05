@@ -5,7 +5,7 @@ module Five9
     # This class is responsible for logic for retrieving and
     # represenging Five9 call campaigns
     class List < Base
-      self.attr_accessor :name
+      attr_accessor :name
 
       def initialize(attributes)
         attributes = attributes.with_indifferent_access
