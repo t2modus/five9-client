@@ -61,7 +61,7 @@ module Five9
           request(
             soap_envelope(:getReportResult, identifier: @five_nine_identifier)
           ), 'getReportResultResponse'
-        ).yield_self do |results|
+        ).first.yield_self do |results|
           if results
             columns = results.dig('header', 'values', 'data')&.map do |header|
               header.gsub(/\s/, '_').gsub(/[()]/, '').downcase
