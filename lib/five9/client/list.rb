@@ -16,7 +16,7 @@ module Five9
         header_columns = fields.map.with_index do |field, index|
           <<~XML
             <fieldsMapping>
-              <columnNumber>#{index}</columnNumber>
+              <columnNumber>#{index + 1}</columnNumber>
               <fieldName>#{field}</fieldName>
               <key>#{index.zero?}</key>
             </fieldsMapping>
